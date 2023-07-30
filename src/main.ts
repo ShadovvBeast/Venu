@@ -53,7 +53,7 @@ async function startCall() {
 
   peerConnection.addEventListener('iceconnectionstatechange', () => {
     if (peerConnection.iceConnectionState === 'disconnected') {
-      endCall();
+      // Handle the disconnection
     }
   });
 
