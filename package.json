@@ -1,0 +1,25 @@
+{
+  "name": "peer-to-peer-voice-communication",
+  "version": "1.0.0",
+  "description": "A simple peer-to-peer voice communication web application using TypeScript and WebRTC.",
+  "main": "main.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "keywords": [
+    "peer-to-peer",
+    "voice",
+    "communication",
+    "typescript",
+    "webrtc"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-loader": "^8.0.14",
+    "typescript": "^4.1.3",
+    "webpack": "^5.11.1",
+    "webpack-cli": "^4.3.1"
+  }
+}
