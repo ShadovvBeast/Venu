@@ -5,7 +5,8 @@
   "main": "main.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
+    "build": "webpack",
+    "start": "ts-node server.ts"
   },
   "keywords": [
     "peer-to-peer",
@@ -20,6 +21,8 @@
     "ts-loader": "^8.0.14",
     "typescript": "^4.1.3",
     "webpack": "^5.11.1",
-    "webpack-cli": "^4.3.1"
+    "webpack-cli": "^4.3.1",
+    "ts-node": "^10.2.1",
+    "express": "^4.17.1"
   }
 }
