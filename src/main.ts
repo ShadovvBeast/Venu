@@ -61,13 +61,16 @@ async function startCall() {
     remoteAudio.srcObject = event.streams[0];
   });
 
-  localStream.getTracks().forEach(track => {
-    peerConnection.addTrack(track, localStream);
-  });
+localStream.getTracks().forEach(track => {
+  peerConnection.addTrack(track, localStream);
+});
 
-  const offer = await peerConnection.createOffer();
-  await peerConnection.setLocalDescription(offer);
-  ws.send(JSON.stringify({ offer: offer }));
+const offer = await peerConnection.createOffer();
+await peerConnection.setLocalDescription(offer);
+ws.send(JSON.stringify({ offer: offer }));
+
+// Send the MediaStream to the other clients
+ws.send(JSON.stringify({ mediaStream: localStream }));
 }
 
 window.onload = startCall;
