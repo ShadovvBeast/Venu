@@ -15,6 +15,9 @@ ws = new WebSocket('wss://192.168.1.104:3000');
 ws.addEventListener('message', async event => {
   const message = JSON.parse(event.data);
   if (message.offer) {
+    if (!peerConnection) {
+      startCall();
+    }
     await peerConnection.setRemoteDescription(new RTCSessionDescription(message.offer));
     const answer = await peerConnection.createAnswer();
     await peerConnection.setLocalDescription(answer);
