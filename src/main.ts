@@ -2,13 +2,7 @@ let localStream: MediaStream;
 let peerConnection: RTCPeerConnection;
 let ws: WebSocket;
 
-const startButton = document.getElementById('start') as HTMLButtonElement;
-const endButton = document.getElementById('end') as HTMLButtonElement;
-const localAudio = document.getElementById('localAudio') as HTMLAudioElement;
 const remoteAudio = document.getElementById('remoteAudio') as HTMLAudioElement;
-
-startButton.addEventListener('click', startCall);
-endButton.addEventListener('click', endCall);
 
 ws = new WebSocket('wss://192.168.1.104:3000');
 
@@ -36,12 +30,11 @@ ws.addEventListener('error', event => {
 
 ws.addEventListener('close', event => {
   console.log('WebSocket closed:', event);
-  // Handle the closing of the WebSocket
+  // Reconnect the WebSocket
+  startCall();
 });
 
-async function startCall() {
-  startButton.disabled = true;
-  endButton.disabled = false;
+window.onload = async function startCall() {
 
   if (!navigator.mediaDevices || typeof navigator.mediaDevices.getUserMedia !== 'function') {
     throw new Error('getUserMedia is not supported by your browser or the webpage is not served over HTTPS or localhost.');
@@ -77,16 +70,4 @@ async function startCall() {
   ws.send(JSON.stringify({ offer: offer }));
 }
 
-function endCall() {
-  startButton.disabled = false;
-  endButton.disabled = true;
-
-  localStream.getTracks().forEach(track => track.stop());
-  if (remoteAudio.srcObject) {
-    (remoteAudio.srcObject as MediaStream).getTracks().forEach(track => track.stop());
-  }
-
-  peerConnection.close();
-  peerConnection = null;
-  remoteAudio.srcObject = null;
-}
+// Remove the endCall function
