@@ -35,7 +35,6 @@ async function startCall() {
   }
 
   localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  localAudio.srcObject = localStream;
 
   const configuration = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
   peerConnection = new RTCPeerConnection(configuration);
