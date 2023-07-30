@@ -13,6 +13,10 @@ async function startCall() {
   startButton.disabled = true;
   endButton.disabled = false;
 
+  if (!navigator.mediaDevices || typeof navigator.mediaDevices.getUserMedia !== 'function') {
+    throw new Error('getUserMedia is not supported by your browser or the webpage is not served over HTTPS or localhost.');
+  }
+
   localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
   localAudio.srcObject = localStream;
 
