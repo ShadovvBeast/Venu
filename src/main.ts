@@ -39,7 +39,24 @@ async function startCall() {
     peerConnection.addTrack(track, localStream);
   });
 
-  // Code for creating offer, setting local and remote description will go here
+  const offer = await peerConnection.createOffer();
+  await peerConnection.setLocalDescription(offer);
+
+  // Simulate the signaling part using setTimeout and Promise
+  const remotePeerConnection = new RTCPeerConnection(configuration);
+  remotePeerConnection.addEventListener('icecandidate', event => {
+    if (event.candidate) {
+      // Send the candidate to the remote peer
+    }
+  });
+  remotePeerConnection.addEventListener('track', event => {
+    remoteAudio.srcObject = event.streams[0];
+  });
+  await remotePeerConnection.setRemoteDescription(offer);
+  const answer = await remotePeerConnection.createAnswer();
+  await remotePeerConnection.setLocalDescription(answer);
+  await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for all ICE candidates
+  await peerConnection.setRemoteDescription(remotePeerConnection.localDescription);
 }
 
 function endCall() {
