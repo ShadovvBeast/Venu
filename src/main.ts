@@ -10,7 +10,7 @@ const remoteAudio = document.getElementById('remoteAudio') as HTMLAudioElement;
 startButton.addEventListener('click', startCall);
 endButton.addEventListener('click', endCall);
 
-ws = new WebSocket('wss://localhost:3000');
+ws = new WebSocket('wss://192.168.1.104:3000');
 
 ws.addEventListener('message', async event => {
   const message = JSON.parse(event.data);
