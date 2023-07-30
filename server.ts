@@ -7,7 +7,8 @@ const port = process.env.PORT || 3000;
 
 app.use(morgan('combined'));
 app.use((req, res, next) => {
-  console.log(`Full path: ${req.protocol}://${req.get('host')}${req.originalUrl}`);
+  const fullPath = path.join(__dirname, req.path);
+  console.log(`Full file system path: ${fullPath}`);
   next();
 });
 app.use(express.static(path.join(__dirname, 'dist')));
