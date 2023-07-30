@@ -23,8 +23,8 @@ app.get('/', (req, res) => {
 });
 
 const httpsOptions = {
-  key: fs.readFileSync(path.join(__dirname, 'keys', 'key.pem')),
-  cert: fs.readFileSync(path.join(__dirname, 'keys', 'cert.pem'))
+  key: fs.readFileSync(path.join(__dirname, 'keys', 'domain.key')),
+  cert: fs.readFileSync(path.join(__dirname, 'keys', 'domain.crt'))
 };
 
 https.createServer(httpsOptions, app).listen(port, () => {
