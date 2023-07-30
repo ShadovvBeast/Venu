@@ -31,7 +31,7 @@ ws.addEventListener('error', event => {
 ws.addEventListener('close', event => {
   console.log('WebSocket closed:', event);
   // Reconnect the WebSocket
-  window.onload();
+  window.onload(event);
 });
 
 async function startCall() {
