@@ -13,7 +13,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/bundle.js', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'bundle.js'));
+  res.sendFile(path.resolve(__dirname, 'dist', 'bundle.js'));
 });
 
 app.get('/', (req, res) => {
