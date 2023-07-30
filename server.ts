@@ -11,7 +11,10 @@ app.use((req, res, next) => {
   console.log(`Full file system path: ${fullPath}`);
   next();
 });
-app.use(express.static(path.join(__dirname, 'dist')));
+
+app.get('/bundle.js', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'bundle.js'));
+});
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
