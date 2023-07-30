@@ -1,5 +1,6 @@
 let localStream: MediaStream;
 let peerConnection: RTCPeerConnection;
+let ws: WebSocket;
 
 const startButton = document.getElementById('start') as HTMLButtonElement;
 const endButton = document.getElementById('end') as HTMLButtonElement;
@@ -8,6 +9,22 @@ const remoteAudio = document.getElementById('remoteAudio') as HTMLAudioElement;
 
 startButton.addEventListener('click', startCall);
 endButton.addEventListener('click', endCall);
+
+ws = new WebSocket('wss://localhost:3000');
+
+ws.addEventListener('message', async event => {
+  const message = JSON.parse(event.data);
+  if (message.offer) {
+    await peerConnection.setRemoteDescription(new RTCSessionDescription(message.offer));
+    const answer = await peerConnection.createAnswer();
+    await peerConnection.setLocalDescription(answer);
+    ws.send(JSON.stringify({ answer: peerConnection.localDescription }));
+  } else if (message.answer) {
+    await peerConnection.setRemoteDescription(new RTCSessionDescription(message.answer));
+  } else if (message.iceCandidate) {
+    await peerConnection.addIceCandidate(new RTCIceCandidate(message.iceCandidate));
+  }
+});
 
 async function startCall() {
   startButton.disabled = true;
@@ -25,7 +42,7 @@ async function startCall() {
 
   peerConnection.addEventListener('icecandidate', event => {
     if (event.candidate) {
-      // Send the candidate to the remote peer
+      ws.send(JSON.stringify({ iceCandidate: event.candidate }));
     }
   });
 
@@ -45,22 +62,7 @@ async function startCall() {
 
   const offer = await peerConnection.createOffer();
   await peerConnection.setLocalDescription(offer);
-
-  // Simulate the signaling part using setTimeout and Promise
-  const remotePeerConnection = new RTCPeerConnection(configuration);
-  remotePeerConnection.addEventListener('icecandidate', event => {
-    if (event.candidate) {
-      // Send the candidate to the remote peer
-    }
-  });
-  remotePeerConnection.addEventListener('track', event => {
-    remoteAudio.srcObject = event.streams[0];
-  });
-  await remotePeerConnection.setRemoteDescription(offer);
-  const answer = await remotePeerConnection.createAnswer();
-  await remotePeerConnection.setLocalDescription(answer);
-  await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for all ICE candidates
-  await peerConnection.setRemoteDescription(remotePeerConnection.localDescription);
+  ws.send(JSON.stringify({ offer: offer }));
 }
 
 function endCall() {
