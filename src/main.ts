@@ -26,6 +26,16 @@ ws.addEventListener('message', async event => {
   }
 });
 
+ws.addEventListener('error', event => {
+  console.error('WebSocket error:', event);
+  // Handle the error or reconnect the WebSocket
+});
+
+ws.addEventListener('close', event => {
+  console.log('WebSocket closed:', event);
+  // Handle the closing of the WebSocket
+});
+
 async function startCall() {
   startButton.disabled = true;
   endButton.disabled = false;
