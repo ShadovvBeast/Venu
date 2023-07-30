@@ -6,6 +6,10 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(morgan('combined'));
+app.use((req, res, next) => {
+  console.log(`Full path: ${req.protocol}://${req.get('host')}${req.originalUrl}`);
+  next();
+});
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.get('/', (req, res) => {
