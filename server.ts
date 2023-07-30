@@ -40,7 +40,10 @@ wss.on('connection', ws => {
     // Broadcast the message to all other clients
     wss.clients.forEach(client => {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
-        client.send(message);
+        // Ensure that the message is a string that can be parsed as JSON
+        if (typeof message === 'string') {
+          client.send(message);
+        }
       }
     });
   });
