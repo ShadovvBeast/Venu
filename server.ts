@@ -1,6 +1,8 @@
 import express from 'express';
 import path from 'path';
 import morgan from 'morgan';
+import https from 'https';
+import fs from 'fs';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -20,6 +22,11 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+const httpsOptions = {
+  key: fs.readFileSync(path.join(__dirname, 'key.pem')),
+  cert: fs.readFileSync(path.join(__dirname, 'cert.pem'))
+};
+
+https.createServer(httpsOptions, app).listen(port, () => {
+  console.log(`Server is running on https://localhost:${port}`);
 });
