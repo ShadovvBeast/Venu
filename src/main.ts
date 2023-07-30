@@ -31,10 +31,10 @@ ws.addEventListener('error', event => {
 ws.addEventListener('close', event => {
   console.log('WebSocket closed:', event);
   // Reconnect the WebSocket
-  startCall();
+  window.onload();
 });
 
-window.onload = async function startCall() {
+async function startCall() {
 
   if (!navigator.mediaDevices || typeof navigator.mediaDevices.getUserMedia !== 'function') {
     throw new Error('getUserMedia is not supported by your browser or the webpage is not served over HTTPS or localhost.');
@@ -70,4 +70,4 @@ window.onload = async function startCall() {
   ws.send(JSON.stringify({ offer: offer }));
 }
 
-// Remove the endCall function
+window.onload = startCall;
